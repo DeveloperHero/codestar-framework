@@ -216,15 +216,24 @@ class CSFramework extends CSFramework_Abstract {
             }
 
             // validate options
-            if ( isset( $field['validate'] ) && has_filter( 'cs_validate_'. $field['validate'] ) ) {
+            if ( isset( $field['validate'] ) ) {
+              if ( !empty( $field['validate'] ) ) {
+                $validation_rules = explode( '|', $field['validate'] );
 
-              $validate = apply_filters( 'cs_validate_' . $field['validate'], $request_value, $field, $section['fields'] );
+                foreach( $validation_rules as $validation_rule ) {
+                  if ( has_filter( 'cs_validate_'. $validation_rule ) ) {
+                    $validate = apply_filters( 'cs_validate_' . trim($validation_rule), $request_value, $field, $section['fields'] );
 
-              if( ! empty( $validate ) ) {
-                $add_errors[] = $this->add_settings_error( $validate, 'error', $field['id'] );
-                $request[$field['id']] = ( isset( $this->get_option[$field['id']] ) ) ? $this->get_option[$field['id']] : '';
+                    if( ! empty( $validate ) ) {
+                      $add_errors[] = $this->add_settings_error( $validate, 'error', $field['id'] );
+                      $request[$field['id']] = ( isset( $this->get_option[$field['id']] ) ) ? $this->get_option[$field['id']] : '';
+                      break;
+                    }
+                  }
+                }
+
               }
-
+              
             }
 
           }

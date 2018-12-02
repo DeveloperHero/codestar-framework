@@ -52,7 +52,7 @@ if( ! function_exists( 'cs_validate_numeric' ) ) {
 if( ! function_exists( 'cs_validate_required' ) ) {
   function cs_validate_required( $value ) {
     if ( empty( $value ) ) {
-      return esc_html__( 'Fatal Error! This field is required!', 'cs-framework' );
+      return esc_html__( 'This field is required!', 'cs-framework' );
     }
   }
   add_filter( 'cs_validate_required', 'cs_validate_required' );

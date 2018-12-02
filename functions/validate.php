@@ -9,6 +9,8 @@
  */
 if( ! function_exists( 'cs_validate_email' ) ) {
   function cs_validate_email( $value, $field ) {
+    if (empty($value))
+      return;
 
     if ( ! sanitize_email( $value ) ) {
       return esc_html__( 'Please write a valid email address!', 'cs-framework' );
@@ -28,6 +30,8 @@ if( ! function_exists( 'cs_validate_email' ) ) {
  */
 if( ! function_exists( 'cs_validate_numeric' ) ) {
   function cs_validate_numeric( $value, $field ) {
+    if (empty($value))
+      return;
 
     if ( ! is_numeric( $value ) ) {
       return esc_html__( 'Please write a numeric data!', 'cs-framework' );
@@ -52,4 +56,24 @@ if( ! function_exists( 'cs_validate_required' ) ) {
     }
   }
   add_filter( 'cs_validate_required', 'cs_validate_required' );
+}
+
+/**
+ *
+ * URL validate
+ *
+ * @since 1.0.2
+ * @version 1.0.2
+ *
+ */
+if( ! function_exists( 'cs_validate_url' ) ) {
+  function cs_validate_url( $value ) {
+    if (empty($value))
+      return;
+
+    if (filter_var($value, FILTER_VALIDATE_URL) == false) {
+      return esc_html__( 'Field must be a valid URL', 'cs-framework' );
+    }
+  }
+  add_filter( 'cs_validate_url', 'cs_validate_url' );
 }
